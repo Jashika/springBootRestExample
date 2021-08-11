@@ -1,4 +1,4 @@
-package com.springbootWithJPA.springBootRestExample;
+package com.springbootwithjpa.springbootrestexample;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,12 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public Employee getEmployee(Integer id) {
+    public Employee getEmployee(int id) {
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + id));
     }
 
-    public Employee updateEmployee(Integer id, Employee employee) {
+    public Employee updateEmployee(int id, Employee employee) {
         Employee emp = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + id));
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
@@ -32,7 +32,7 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public ResponseEntity<Employee> deleteEmployee(Integer id) {
+    public ResponseEntity<Employee> deleteEmployee(int id) {
         Employee emp = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + id));
         employeeRepository.deleteById(id);
         return ResponseEntity.ok().build();

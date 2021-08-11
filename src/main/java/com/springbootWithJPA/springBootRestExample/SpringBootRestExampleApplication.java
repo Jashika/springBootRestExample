@@ -1,4 +1,4 @@
-package com.springbootWithJPA.springBootRestExample;
+package com.springbootwithjpa.springbootrestexample;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

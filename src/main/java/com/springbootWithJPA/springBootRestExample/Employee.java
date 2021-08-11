@@ -1,4 +1,4 @@
-package com.springbootWithJPA.springBootRestExample;
+package com.springbootwithjpa.springbootrestexample;
 
 import javax.persistence.*;
 

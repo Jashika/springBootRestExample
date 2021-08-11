@@ -1,4 +1,4 @@
-package com.springbootWithJPA.springBootRestExample;
+package com.springbootwithjpa.springbootrestexample;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

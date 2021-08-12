@@ -20,7 +20,7 @@ public class EmployeeService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + id));
     }
 
-    public Employee updateEmployee(int id, Employee employee) {
+    public Employee updateEmployee(int id,Employee employee) {
         Employee emp = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + id));
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());

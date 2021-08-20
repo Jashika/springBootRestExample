@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
@@ -32,14 +31,9 @@ public class EmployeeServiceTest {
         Employee newEmployee = employeeService.createEmployee(new Employee());
         assertEquals("Jashika", newEmployee.getFirstName());
     }
-   @Test
-    public void saveNullCheckTest() {
-        Employee newEmployee = employeeService.createEmployee(null);
-     assertNull(null, String.valueOf(newEmployee));
-    }
 
     @Test
-    public void getEmployee() {
+    public void getEmployeeTest() {
         Employee emp = new Employee();
         emp.setFirstName("Yashika");
         when(employeeRepository.findById(anyInt())).thenReturn(Optional.of(emp));
@@ -48,7 +42,7 @@ public class EmployeeServiceTest {
     }
 
    @Test
-    public void getAllEmployees() {
+    public void getAllEmployeesTest() {
         Employee employee1 = new Employee();
         employee1.setFirstName("Unnathi");
         employee1.setLastName("Ajay");

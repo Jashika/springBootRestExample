@@ -1,7 +1,10 @@
 package com.springbootwithjpa.springbootrestexample;
 
-import javax.persistence.*;
-
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 @Entity
 @Table(name = "employees")
 public class Employee {

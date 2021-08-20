@@ -1,7 +1,6 @@
 package com.springbootwithjpa.springbootrestexample;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,10 +31,8 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public ResponseEntity<Employee> deleteEmployee(int id) {
-        Employee emp = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + id));
+    public void deleteEmployee(int id) {
         employeeRepository.deleteById(id);
-        return ResponseEntity.ok().build();
     }
 }
 

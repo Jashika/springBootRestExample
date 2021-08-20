@@ -47,7 +47,7 @@ public class EmployeeControllerTest {
         mockEmployee.setLastName("Vasu");
         mockEmployee.setEmailId("jashikavasu@gmail.com");
         String inputInJson = this.mapToJson(mockEmployee);
-        String URI = "/api/createEmployee";
+        String URI = "/employee";
         when(employeeService.createEmployee(any(Employee.class))).thenReturn(mockEmployee);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post(URI)
@@ -65,7 +65,7 @@ public class EmployeeControllerTest {
         employee.setId(1);
         employee.setFirstName("jashika");
         Mockito.when(employeeService.getEmployee(ArgumentMatchers.anyInt())).thenReturn(employee);
-        mockMvc.perform(get("/api/getEmployee/1")).andExpect(status().isOk()).andExpect(content().contentType("application/json")).andExpect(jsonPath("$.firstName").value("jashika"));
+        mockMvc.perform(get("/employee/1")).andExpect(status().isOk()).andExpect(content().contentType("application/json")).andExpect(jsonPath("$.firstName").value("jashika"));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class EmployeeControllerTest {
         List<Employee> empList = new ArrayList<>(Arrays.asList(e1, e2, e3));
         when(employeeService.getAllEmployees()).thenReturn(empList);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/api/allEmployees");
+                .get("/employee/employees");
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
         assertEquals(this.mapToJson(empList), mvcResult.getResponse().getContentAsString());
     }
@@ -93,7 +93,7 @@ public class EmployeeControllerTest {
         String inputInJson = this.mapToJson(employee);
         when(employeeService.updateEmployee(ArgumentMatchers.anyInt(), ArgumentMatchers.any(Employee.class))).thenReturn(employee);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/api/updateEmployee/1")
+                .put("/employee/1")
                 .accept(MediaType.APPLICATION_JSON).content(inputInJson)
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
@@ -103,7 +103,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void deleteEmployeeTest() throws Exception {
-        mockMvc.perform(delete("/api/deleteEmployee/1")).andExpect(status().isOk());
+        mockMvc.perform(delete("/employee/1")).andExpect(status().isOk());
     }
 
     private String mapToJson(Object object) throws JsonProcessingException {

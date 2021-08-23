@@ -24,8 +24,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WebMvcTest(value = EmployeeController.class)
 public class EmployeeControllerTest {
@@ -41,7 +42,7 @@ public class EmployeeControllerTest {
     private EmployeeController controller;
 
     @Test
-    public void testCreateEmployee() throws Exception {
+    public void createEmployeeTest() throws Exception {
         Employee mockEmployee = new Employee();
         mockEmployee.setFirstName("Jashika");
         mockEmployee.setLastName("Vasu");
@@ -85,7 +86,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    public void updateEmployee() throws Exception {
+    public void updateEmployeeTest() throws Exception {
         Employee employee = new Employee();
         employee.setFirstName("Jashika");
         employee.setLastName("Vasu");

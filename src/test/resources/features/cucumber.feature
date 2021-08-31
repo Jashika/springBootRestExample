@@ -8,7 +8,6 @@ Feature: Test CRUD methods in Sample Employee REST API testing
     Given id=75
     Then I should see the employee object for the id=75
 
-
   Scenario:I want to get a all employee from db
     Given Endpoint
     Then I should get all employees from the db
@@ -19,8 +18,8 @@ Feature: Test CRUD methods in Sample Employee REST API testing
     Then I should see the updated employee object from db as response
 
   Scenario:I want to delete an employee from db
-   Given An employee id=89 which has to be deleted
-   Then I should see the  employee object deleted for id=89 from db
+   Given An employee id=90 which has to be deleted
+   Then I should see the  employee object deleted for id=90 from db
 
 
 

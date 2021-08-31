@@ -66,20 +66,17 @@ public class StepDefinitions {
     public void should_see_the_updated_employee_object_from_db_as_response() {
        assertNotNull(emp);
     }
-//  @Given("An employee id={int} which has to be deleted")
-//    public void have_specified_an_employee_id_which_has_to_be_deleted(int id) {
-//        springBootRestExampleIntegrationTest.deleteEmployeeById(id);
-//    }
-//    @Then("I should see the  employee object deleted for id={int} from db")
-//    public void should_see_the_employee_object_deleted_from_db(int id) {
-//        employees=springBootRestExampleIntegrationTest.getEmployees();
-//        assertFalse(Arrays.asList(employees).stream().anyMatch(item->item.getId()==(id)));
-//    }
 
-    @Given("invalid id={int}")
-    public void given_invalid_id(Integer id) {
-        emp = springBootRestExampleIntegrationTest.getEmployeeById(id);
+  @Given("An employee id={int} which has to be deleted")
+    public void have_specified_an_employee_id_which_has_to_be_deleted(int id) {
+        springBootRestExampleIntegrationTest.deleteEmployeeById(id);
     }
+    @Then("I should see the  employee object deleted for id={int} from db")
+    public void should_see_the_employee_object_deleted_from_db(int id) {
+        employees=springBootRestExampleIntegrationTest.getEmployees();
+        assertFalse(Arrays.asList(employees).stream().anyMatch(item->item.getId()==(id)));
+    }
+
     @Then("I should return null object")
     public void should_return_empty_object() {
         assertNull(emp);

@@ -21,31 +21,30 @@ private Logger logger;
     private int port;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private String thingsEndpoint() {
+    private String endpoint() {
         return SERVER_URL + ":" + port + THINGS_ENDPOINT;
     }
 
     public Employee createEmployee(final Employee something) {
-        return restTemplate.postForEntity(thingsEndpoint(), something, Employee.class).getBody();
+        return restTemplate.postForEntity(endpoint(), something, Employee.class).getBody();
     }
 
-    public Employee getEmployeeById(int id) {
-        return restTemplate.getForEntity(thingsEndpoint()+ "/" +id, Employee.class).getBody();
+    public Employee getEmployeeById(int id)  {
+        return restTemplate.getForEntity(endpoint()+ "/" +id, Employee.class).getBody();
     }
 
     public Employee[] getEmployees() {
-
-        return restTemplate.getForEntity(thingsEndpoint()+ "/employees", Employee[].class).getBody();
+        return restTemplate.getForEntity(endpoint()+ "/employees", Employee[].class).getBody();
     }
 
     public Employee UpdateEmployeeById(Employee employee,int id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Employee> entity = new HttpEntity<>(employee, headers);
-       return restTemplate.exchange(thingsEndpoint()+ "/" +id, HttpMethod.PUT,entity,Employee.class,id).getBody();
+       return restTemplate.exchange(endpoint()+ "/" +id, HttpMethod.PUT,entity,Employee.class,id).getBody();
     }
 
     public void deleteEmployeeById(int id) {
-        restTemplate.delete(thingsEndpoint()+"/" +id);
+        restTemplate.delete(endpoint()+"/" +id);
     }
 }

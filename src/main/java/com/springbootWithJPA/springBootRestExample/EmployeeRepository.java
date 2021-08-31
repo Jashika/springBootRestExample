@@ -1,4 +1,4 @@
-package com.springbootwithjpa.springbootrestexample;
+package com.springbootWithJPA.springBootRestExample;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package com.springbootwithjpa.springbootrestexample;
+package com.springbootWithJPA.springBootRestExample;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

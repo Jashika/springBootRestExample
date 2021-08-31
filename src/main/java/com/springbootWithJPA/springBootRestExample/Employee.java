@@ -1,4 +1,4 @@
-package com.springbootwithjpa.springbootrestexample;
+package com.springbootWithJPA.springBootRestExample;
 
 import lombok.Data;
 

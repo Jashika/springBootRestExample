@@ -1,4 +1,4 @@
-package com.springbootwithjpa.springbootrestexample;
+package  com.springbootWithJPA.springBootRestExample;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;

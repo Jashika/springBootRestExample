@@ -1,10 +1,10 @@
 package  com.springbootWithJPA.springBootRestExample;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -27,18 +28,19 @@ public class EmployeeServiceTest {
         Employee employee = new Employee();
         employee.setFirstName("Jashika");
         employee.setLastName("Vasu");
-        when(employeeRepository.save(ArgumentMatchers.any(Employee.class))).thenReturn(employee);
+        when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
         Employee newEmployee = employeeService.createEmployee(new Employee());
         assertEquals("Jashika", newEmployee.getFirstName());
     }
 
     @Test
-    public void getEmployeeTest() {
-        Employee emp = new Employee();
-        emp.setFirstName("Yashika");
-        when(employeeRepository.findById(anyInt())).thenReturn(Optional.of(emp));
-        Employee newEmployee = employeeService.getEmployee(anyInt());
-       assertEquals(emp.getFirstName(), newEmployee.getFirstName());
+    public void getEmployeeTest() throws ResourceNotFoundException{
+        int id = 1;
+        Employee employee = new Employee();
+        employee.setFirstName("Jashika");
+        employee.setLastName("Vasu");
+        when(employeeRepository.findById(id)).thenReturn(Optional.of(employee));
+        assertEquals(employeeService.getEmployee(id).getBody().getFirstName(), "Jashika");
     }
 
    @Test
@@ -53,6 +55,22 @@ public class EmployeeServiceTest {
         when(employeeRepository.findAll()).thenReturn(mockEmpLIst);
         List<Employee> actalEmpList = employeeService.getAllEmployees();
         assertEquals(actalEmpList.size(), actalEmpList.size());
+    }
+
+    @Test
+    public void updateEmployeeTest() throws ResourceNotFoundException {
+        int id =1;
+        ResponseEntity<Employee> employee = employeeService.getEmployee(id);
+        employee.getBody().setFirstName("jashika");
+        ResponseEntity<Employee> contactResponseEntity = employeeService.updateEmployee(id,employee.getBody());
+        verify(employeeRepository).save(any(Employee.class));
+        verify(contactResponseEntity.getBody()).setFirstName("jashika");
+    }
+
+    @Test
+    void deleteEmployeeTest() throws ResourceNotFoundException {
+        employeeService.deleteEmployee(1);
+        verify(employeeRepository).delete(any(Employee.class));
     }
 
 }

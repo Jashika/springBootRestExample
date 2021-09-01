@@ -3,6 +3,7 @@ package com.springbootWithJPA.springBootRestExample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +26,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployee(@PathVariable(value = "id") int id) throws ResourceNotFoundException {
+    public ResponseEntity<Employee> getEmployee(@PathVariable(value = "id") int id) throws ResourceNotFoundException {
         return employeeService.getEmployee(id);
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable(value = "id") int id, @RequestBody Employee employee) throws ResourceNotFoundException {
+    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") int id, @RequestBody Employee employee) throws ResourceNotFoundException {
         return employeeService.updateEmployee(id, employee);
     }
 

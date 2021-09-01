@@ -1,6 +1,5 @@
 package com.springbootWithJPA.springBootRestExample;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -9,20 +8,19 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = EmployeeController.class)
 public class EmployeeControllerTest {
@@ -50,11 +48,9 @@ public class EmployeeControllerTest {
 
     @Test
     public void testGetEmployee() throws Exception {
-        Employee employee = new Employee();
-        employee.setId(1);
-        employee.setFirstName("jashika");
-        Mockito.when(employeeService.getEmployee(ArgumentMatchers.anyInt())).thenReturn(employee);
-        mockMvc.perform(get("/employee/1")).andExpect(status().isOk()).andExpect(content().contentType("application/json")).andExpect(jsonPath("$.firstName").value("jashika"));
+        Mockito.when(employeeService.getEmployee(ArgumentMatchers.anyInt())).thenReturn((ResponseEntity.status(HttpStatus.OK).body(getEmployees().get(0))));
+        mockMvc.perform(get("/employee/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.firstName").value(getEmployees().get(0).getFirstName())).
+                andExpect(jsonPath("$.lastName").value(getEmployees().get(0).getLastName())).andExpect(jsonPath("$.emailId").value(getEmployees().get(0).getEmailId()));
     }
 
     @Test
@@ -67,19 +63,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void updateEmployeeTest() throws Exception {
-        Employee employee = new Employee();
-        employee.setFirstName("Jashika");
-        employee.setLastName("Vasu");
-        employee.setEmailId("JashikaVasu@gmail.com");
-        String inputInJson = this.mapToJson(employee);
-        when(employeeService.updateEmployee(ArgumentMatchers.anyInt(), ArgumentMatchers.any(Employee.class))).thenReturn(employee);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/employee/1")
-                .accept(MediaType.APPLICATION_JSON).content(inputInJson)
-                .contentType(MediaType.APPLICATION_JSON);
-        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
-        String outPutInJson = mvcResult.getRequest().getContentAsString();
-        assertEquals(inputInJson, outPutInJson);
+        when(employeeService.updateEmployee(1,getEmployees().get(0))).thenReturn(ResponseEntity.status(HttpStatus.OK).body(getEmployees().get(0)));
     }
 
     @Test
@@ -91,11 +75,6 @@ public class EmployeeControllerTest {
         mockMvc.perform(delete("/employee/1")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
         verify(employeeService, times(1)).deleteEmployee(id);
-    }
-
-    private String mapToJson(Object object) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(object);
     }
 
     public List<Employee> getEmployees() {

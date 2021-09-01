@@ -5,6 +5,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 
@@ -16,6 +18,8 @@ public class StepDefinitions {
     Employee employee = new Employee();
     Employee emp;
     Employee[] employees;
+    ResponseEntity<String> response;
+    String requestBody;
 
     @Given("Valid employee object")
     public void valid_employee_object() {
@@ -24,54 +28,64 @@ public class StepDefinitions {
         employee.setEmailId("Soumya@gmail.com");
     }
 
-    @When("I  send a  request a new employee is created in db")
-    public void send_a_request_with_Id_firstName_Jashika_lastName_Vasu_emailId_JashikaVasu_gmail_com_a_new_employee_is_created() {
-        emp = springBootRestExampleIntegrationTest.createEmployee(employee);
+    @When("Send POST Employee service api endpoint with new employee object")
+    public void send_post_request() {
+        response = springBootRestExampleIntegrationTest.createEmployee(employee);
     }
 
-    @Then("I should get that employee object returned")
+    @Then("Recieve 200 HTTP response code")
     public void should_be_able_to_see_a_new_employee_created() {
-        assertEquals(employee.getFirstName(), emp.getFirstName());
+        assertTrue(response.getStatusCode()== HttpStatus.OK);
     }
 
-    @Given("id={int}")
-    public void have_specified_id(Integer id) {
-        emp = springBootRestExampleIntegrationTest.getEmployeeById(id);
+    @Given("Send GET Employee service api endpoint with id={int}")
+    public void send_get_request(Integer id) {
+       response = springBootRestExampleIntegrationTest.getEmployeeById(id);
     }
-    @Then("I should see the employee object for the id={int}")
-    public void should_see_the_employee_object_for_the_id(int id) {
-        assertNotNull(emp.getId());
+    @Then("Recieve valid HTTP response code 200")
+    public void receive_valid_response() {
+       assertTrue(response.getStatusCode()== HttpStatus.OK);
+    }
+    @Given("Send GET request with id={int}")
+    public void send_get_request_negative_scenario(Integer id) {
+        response = springBootRestExampleIntegrationTest.getEmployeeById(id);
+    }
+    @Then("Recieve  HTTP response code 404")
+    public void receive_exception_with_status_code() {
+        assertTrue(response.getStatusCode()==HttpStatus.NOT_FOUND);
     }
 
-  @Given("Endpoint")
+  @Given("Send GET Employees service api endpoint")
     public void have_specified_endpoint() {
         employees=springBootRestExampleIntegrationTest.getEmployees();
     }
-    @Then("I should get all employees from the db")
+
+    @Then("Should get all employees from the db")
     public void should_get_all_employees_from_the_db() {
         Assert.assertNotNull(Arrays.asList(employees).size());
     }
 
-   @Given("Employee object to be updated")
+   @Given("Employee object to be with fields to be updated")
     public void values_to_be_updated_and_an_id() {
-        employee.setFirstName("YashikaHassan");
-       employee.setLastName("Balagopal");
-       employee.setEmailId("Yashika@gmail.com");
+     String firstName="Nayana";
+       String lastName="pg";
+       String emailId="Nayana@gmail.com";
+        requestBody = "{\"firstName\":\""+firstName+"\",\"lastName\":\""+lastName+"\",\"emailId\":\""+emailId+"\"}";
     }
-    @When("I send a request with the object and id={int} an employee with specified id is updated in db")
-    public void send_a_request_with_the_values_and_id_an_employee_with_specified_id_is_updated_in_db(int id) {
-        emp=springBootRestExampleIntegrationTest.UpdateEmployeeById(employee,id);
+    @When("Send a PUT HTTP Employee service request with the object and an existing employee id={int}")
+    public void send_put_request(int id) {
+        response=springBootRestExampleIntegrationTest.UpdateEmployeeById(requestBody,id);
     }
-    @Then("I should see the updated employee object from db as response")
-    public void should_see_the_updated_employee_object_from_db_as_response() {
-       assertNotNull(emp);
+    @Then("Recieve HTTP response code 200")
+    public void receieve_updated_valid_response() {
+        assertTrue(response.getStatusCode()== HttpStatus.OK);
     }
 
   @Given("An employee id={int} which has to be deleted")
     public void have_specified_an_employee_id_which_has_to_be_deleted(int id) {
         springBootRestExampleIntegrationTest.deleteEmployeeById(id);
     }
-    @Then("I should see the  employee object deleted for id={int} from db")
+    @Then("Then I should see the  employee object deleted for id={int}")
     public void should_see_the_employee_object_deleted_from_db(int id) {
         employees=springBootRestExampleIntegrationTest.getEmployees();
         assertFalse(Arrays.asList(employees).stream().anyMatch(item->item.getId()==(id)));

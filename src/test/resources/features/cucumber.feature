@@ -1,30 +1,30 @@
 Feature: Test CRUD methods in Sample Employee REST API testing
-#  Scenario: Save employee
-#    Given  Valid employee object
-#    When Send POST Employee service api endpoint with new employee object
-#    Then Recieve 200 HTTP response code
+  Scenario: Save employee
+    Given  Valid employee data
+    When POST request is sent with employee data
+    Then The employee should be saved in database
 
   Scenario:GET Employee Record
-    Given Send GET Employee service api endpoint with id=75
-    Then Recieve valid HTTP response code 200
+    Given Send GET request with employee id
+    Then I should see employee data returned from database
 
   Scenario:GET Employee Record with non existing id in db
-    Given Send GET request with id=1
-    Then Recieve  HTTP response code 404
+    Given Send GET request with employee id that does not exist in database
+    Then Error is returned
 
 
   Scenario:GET all Employee Records
     Given Send GET Employees service api endpoint
-    Then Should get all employees from the db
+    Then Should get all employees from the database
 
   Scenario:Update Employee Record
-    Given Employee object to be with fields to be updated
-    When Send a PUT HTTP Employee service request with the object and an existing employee id=79
-    Then Recieve HTTP response code 200
-#
-#  Scenario:Delete a employee Record
-#   Given An employee id=90 which has to be deleted
-#   Then I should see the  employee object deleted for id=90
+    Given Employee to be updated
+    When I Send a PUT HTTP Employee service request with the object and an existing employee id
+    Then The employee is updated in database
+
+  Scenario:Delete a employee Record
+   Given Employee id
+   Then I should see the  employee object deleted in the database
 
 
 

@@ -27,12 +27,10 @@ public class StepDefinitions {
         employee.setLastName("Nagesh");
         employee.setEmailId("Soumya@gmail.com");
     }
-
     @When("POST request is sent with employee data")
     public void sendPostRequest() {
         response = springBootRestExampleIntegrationTest.createEmployee(employee);
     }
-
     @Then("The employee should be saved in database")
     public void checkEmployeeCreated() {
         assertTrue(response.getStatusCode()== HttpStatus.OK);
@@ -46,11 +44,12 @@ public class StepDefinitions {
     public void receiveGetResponse() {
        assertTrue(response.getStatusCode()== HttpStatus.OK);
     }
+
     @Given("Send GET request with employee id that does not exist in database")
     public void sendGetRequestWithInvalidId() {
         response = springBootRestExampleIntegrationTest.getEmployeeById(1);
     }
-    @Then("Error is returned")
+    @Then("Error code with status is returned")
     public void receiveErrorCode() {
         assertTrue(response.getStatusCode()==HttpStatus.NOT_FOUND);
     }
@@ -59,7 +58,6 @@ public class StepDefinitions {
     public void getAllEmployees() {
         employees=springBootRestExampleIntegrationTest.getEmployees();
     }
-
     @Then("Should get all employees from the database")
     public void checkAllEmployeesReturned() {
         Assert.assertNotNull(Arrays.asList(employees).size());
@@ -81,14 +79,30 @@ public class StepDefinitions {
         assertTrue(response.getStatusCode()== HttpStatus.OK);
     }
 
+    @Given("Employee with an existing employee id to be updated")
+    public void updateRecordForNonExistingEmployee() {
+        String firstName="Nayana";
+        String lastName="pg";
+        String emailId="Nayana@gmail.com";
+        requestBody = "{\"firstName\":\""+firstName+"\",\"lastName\":\""+lastName+"\",\"emailId\":\""+emailId+"\"}";
+    }
+    @When("I Send a request with the employee data and an existing employee id")
+    public void sendPutRequestForNonExistingEmployee() {
+        response=springBootRestExampleIntegrationTest.UpdateEmployeeById(
+                requestBody,1);
+    }
+    @Then("I should get Not Found Exception returned")
+    public void receiveErrorResponse() {
+        assertTrue(response.getStatusCode()==HttpStatus.NOT_FOUND);
+    }
+
   @Given("Employee id")
     public void deleteEmployee() {
-        springBootRestExampleIntegrationTest.deleteEmployeeById(98);
+        springBootRestExampleIntegrationTest.deleteEmployeeById(99);
     }
     @Then("I should see the  employee object deleted in the database")
     public void checkEmployeeDeleted() {
         employees=springBootRestExampleIntegrationTest.getEmployees();
-        assertFalse(Arrays.asList(employees).stream().anyMatch(item->item.getId()==98));
+        assertFalse(Arrays.asList(employees).stream().anyMatch(item->item.getId()==99));
     }
-
 }

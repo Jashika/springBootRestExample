@@ -46,11 +46,18 @@ private Logger logger;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-        response=restTemplate.exchange(endpoint()+ "/" +id, HttpMethod.PUT,entity,String.class,id);
-        return response;
+        try {
+            response = restTemplate.exchange(endpoint() + "/" + id, HttpMethod.PUT, entity, String.class, id);
+            return response;
+        } catch(RestClientResponseException e){
+            return ResponseEntity.status(e.getRawStatusCode()).body(e.getStatusText());
+        }
     }
 
     public void deleteEmployeeById(int id) {
-        restTemplate.delete(endpoint()+"/" +id);
+        try {
+            restTemplate.delete(endpoint() + "/" + id);
+        }catch(RestClientResponseException e){
+        }
     }
 }

@@ -67,8 +67,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    public void deleteEmployeeTest() throws Exception {
-       // mockMvc.perform(delete("/employee/2")).andExpect(status().isOk());
+    public void deleteEmployeeTest() throws Exception {;
         int id = 1;
         EmployeeService spyService  = Mockito.spy(employeeService);
         Mockito.doNothing().when(spyService).deleteEmployee(id);

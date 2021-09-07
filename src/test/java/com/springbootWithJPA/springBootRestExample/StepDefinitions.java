@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.assertFalse;
 
 public class StepDefinitions {
     @Autowired
